@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="ExternalSystem" externalSystem="GRADLE" externalSystemModuleGroup="week1" externalSystemModuleVersion="1.0-SNAPSHOT" linkedProjectId="week1:test" linkedProjectPath="$MODULE_DIR$/../../week1" rootProjectPath="$MODULE_DIR$/../../week1" />
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output-test url="file://$MODULE_DIR$/../../week1/out/test/classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../week1/src/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../week1/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/../../week1/src/test/resources" type="java-test-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="week1.main" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+  </component>
+  <component name="TestModuleProperties" production-module="week1.main" />
+</module>
