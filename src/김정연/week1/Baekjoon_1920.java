@@ -5,6 +5,14 @@ import java.util.Scanner;
 
 public class Baekjoon_1920 {
 	
+	/*
+	메모리 183232 KB
+	시간	2252 ms
+	
+	시간복잡도
+	바이너리서치 시간복잡도 O(logN)
+	 */
+
 	
 	static int BSearch(int arr[], int target) {
 	    int low = 0;

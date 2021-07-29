@@ -8,6 +8,12 @@ import java.util.Scanner;
 
 
 public class Baekjoon_2164 {
+	
+	/*
+	 * 시간복잡도 
+	 * queue의 삽입 삭제 모두 상수타임
+	 * O(1)
+	 */
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
