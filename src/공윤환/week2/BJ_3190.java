@@ -59,7 +59,7 @@ public class BJ_3190 {
 	
 	/****************** Method List ******************/
 
-//	move: 게임 진행
+//	start: 게임 진행
 	static void start() {
 		// 첫 커멘드 파싱
 		parseCmd();
