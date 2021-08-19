@@ -37,44 +37,41 @@ public class b1992 {
             }
         }
 
-        quadTree(0, N, 0, N);
+        quadTree(0,0, N);
         System.out.println(sb);
 
     }
 
     // 쿼드 트리를 분할 정복으로 구하는 메소드입니다.
-    // sr: 시작 행 er: 종료 행 sc: 시작 열 ec: 종료 열 -> 범위로 재귀처리했습니다.
-    private static void quadTree(int sr, int er, int sc, int ec) {
-        if (canZip(sr, er, sc, ec)) {       // 압축이 가능하다면
-            sb.append(map[sr][sc]);         // 현재 숫자를 결과 문자열에 저장합니다.
+    // r: 시작 행, c: 시작 열, size: 배열 크기 -> 범위로 재귀처리했습니다.
+    private static void quadTree(int r, int c, int size) {
+        if (canZip(r, c, size)) {       // 압축이 가능하다면
+            sb.append(map[r][c]);         // 현재 숫자를 결과 문자열에 저장합니다.
             return;
         }
 
-        // sr과 er의 절반에 있는 행
-        int hr = sr + (er - sr)/2;
-        // sc와 ec의 절반에 있는 열
-        int hc = sc + (ec - sc)/2;
+        // size의 반을 구한다.
+        int half = size / 2;
 
         sb.append("("); // 압축이 불가능하므로 괄호를 먼저 추가합니다.
         // 4등분으로 나누어서 재귀 처리합니다.
-        quadTree(sr, hr, sc, hc);
-        quadTree(sr, hr, hc, ec);
-        quadTree(hr, er, sc, hc);
-        quadTree(hr, er, hc, ec);
+        quadTree(r, c, half);
+        quadTree(r, c+half, half);
+        quadTree(r+half, c, half);
+        quadTree(r+half, c+half, half);
         sb.append(")"); // 4등분에서 모두 압축이 완료되었을 것이므로 괄호를 닫아줍니다.
     }
 
     // 압축이 가능한지 확인하는 메소드입니다.
     // 해당 범위에서 같은 숫자만이 존재하는지 확인하여 boolean으로 리턴합니다.
-    private static boolean canZip(int sr, int er, int sc, int ec) {
-        int num = map[sr][sc];
+    private static boolean canZip(int r, int c, int size) {
+        int num = map[r][c];
 
-        for (int i = sr; i < er; ++i) {
-            for (int j = sc; j < ec; ++j) {
+        for (int i = r; i < r+size; ++i) {
+            for (int j = c; j < c+size; ++j) {
                 if (num != map[i][j]) return false;
             }
         }
         return true;
     }
-
 }
