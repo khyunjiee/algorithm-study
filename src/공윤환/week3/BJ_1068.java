@@ -66,7 +66,7 @@ public class BJ_1068 {
 
 		// Node 하나 삭제
 		int deleteNodeIdx = Integer.parseInt(br.readLine());
-		delete(tree.get(deleteNodeIdx));
+		tree.remove(tree.get(deleteNodeIdx));
 
 		// rootList에 있는 루트Node들 dfs
 		for (Node r : rootList)
@@ -80,16 +80,6 @@ public class BJ_1068 {
 	
 	
 	/****************** Method ******************/
-//	delete: 해당 Node와 그 자식 Node들을 재귀로 tree에서 제거. 객체 자체가 사라지는 것은 아님
-	static void delete(Node node) {
-		tree.remove(node);
-
-		if (node.nodeList.size() == 0)
-			return;
-
-		for (Node child : node.nodeList)
-			delete(child);
-	}
 
 //	dfs: 자식이 없거나, 자식들이 하나라도 tree에 속해있지 않으면 leafNode++
 	static void dfs(Node node) {
