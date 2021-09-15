@@ -1,4 +1,4 @@
-package com.ssafy.algo.study.week6;
+package com.ssafy.algo.study.week7;
 
 import java.util.Arrays;
 import java.util.HashMap;

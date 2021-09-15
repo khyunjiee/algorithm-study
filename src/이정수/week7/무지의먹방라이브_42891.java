@@ -66,6 +66,5 @@ public class 무지의먹방라이브_42891 {
 		}
 		return -1;
 		
-		
     }
 }
