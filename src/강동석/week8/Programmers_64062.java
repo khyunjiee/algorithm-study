@@ -46,7 +46,7 @@ public class Programmers_64062 {
 			if(num<N && parents[num+1]!=0) { // 바로 다음칸이 존재하고 그룹이 존재하면
 				union(num, num+1);
 			}
-			System.out.println(Arrays.toString(parents));
+//			System.out.println(Arrays.toString(parents));
 			if(Math.abs(parents[find(num)])>=k) {
 				answer = life;
 				break;
