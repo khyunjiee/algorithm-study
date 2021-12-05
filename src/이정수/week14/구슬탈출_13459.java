@@ -1,6 +1,5 @@
 package com.ssafy.algo.study.week14;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -10,8 +9,6 @@ public class 구슬탈출_13459 {
 	 * 접근:
 	 * bfs + 시뮬
 	 * 
-	 * 풀이 실패...
-	 * 
 	 * 시간복잡도:
 	 * 
 	 * 
@@ -20,9 +17,21 @@ public class 구슬탈출_13459 {
 	 * 
 	 */
 	
+	static class Result{
+		boolean moved, ended;
+
+		public Result(boolean moved, boolean ended) {
+			super();
+			this.moved = moved;
+			this.ended = ended;
+		}
+		
+	}
+	
 	static char[][] board;
 	static int N,M;
-	static int[][] delta = {{-1,0,1,0},{0,-1,0,1}};
+	static int[][] delta = {{-1,0,1,0},{0,-1,0,1}}; // 상,좌,하,우
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		N = sc.nextInt();
@@ -47,56 +56,104 @@ public class 구슬탈출_13459 {
 			}
 		}
 		
-		bfs(R, B);
+		System.out.println(bfs(R, B));
 		
-		System.out.println(Arrays.deepToString(board));
 	}
 	
 	
-	private static void bfs(int[] r, int[] b) {
-		Queue<int[][]> q = new LinkedList<>();
-		q.add(new int[][]{r,b});
+	private static int bfs(int[] r, int[] b) {
+		
+		Queue<int[][]> queue = new LinkedList<>();
+		queue.add(new int[][]{r,b});
 		int cnt=0;
-		while(!q.isEmpty()) {
-			int size = q.size();
+		
+		while(!queue.isEmpty()) {
+			
+			int size = queue.size();
+			if(cnt==10) return 0;
+			
 			while(--size>=0) {
-				int[][] positions= q.poll();
+				int[][] positions= queue.poll();
+				
 				
 				for (int d = 0; d < 4; d++) {
-					// 보드에 표시
-					int[] redMarble = positions[0];
-					int[] blueMarble = positions[1];
+					int[] redMarblePosition = positions[0].clone();
+					int[] blueMarblePosition = positions[1].clone();
 					
-					board[redMarble[0]][redMarble[1]] = 'R';
-					board[blueMarble[0]][blueMarble[1]] = 'B';
-					boolean didRedMarbleMoved =true;
-					boolean didBlueMarbleMoved =true;
+					// 어떤 구슬을 먼저 움직일지 선택
+					String firstMarbleToMove = decideMarbleToMoveFirst(redMarblePosition, blueMarblePosition, d);
+					Result redMarbleResult = null;
+					Result blueMarbleResult = null;
 					
-					// 한칸씩 움직이기
-					while(didRedMarbleMoved || didBlueMarbleMoved) {
-						// 빨간 구슬 움직이기
-						
-						// 파란 구슬 움직이기
-						
-						// 파란 구슬이 구멍에 빠진 경우
-						
-						// 빨간 구슬이 구멍에 빠진 경우
+					if(firstMarbleToMove.equals("redFirst")) { // 빨간 구슬 먼저 움직이는 경우
+						redMarbleResult = rollMarble(redMarblePosition, blueMarblePosition, d);
+						blueMarbleResult = rollMarble(blueMarblePosition, redMarblePosition, d);
+					}else if(firstMarbleToMove.equals("blueFirst")) { // 파란 구슬 먼저 움직이는 경우
+						blueMarbleResult = rollMarble(blueMarblePosition, redMarblePosition, d);
+						redMarbleResult = rollMarble(redMarblePosition, blueMarblePosition, d);
 					}
 					
-					
+					if(blueMarbleResult.ended) // 파란구슬이 구멍으로 들어간 경우
+						continue;
+					else if(redMarbleResult.ended ) // 빨간구슬만 구멍으로 들어간 경우
+						return 1;
+					else if(!blueMarbleResult.moved && !redMarbleResult.moved) // 두구슬 모두 움직임이 없는 경우
+						continue;
+						
+					queue.add(new int[][] {redMarblePosition, blueMarblePosition});
 				}
-				
-				
 			}
 			cnt++;
 		}
+		
+		return 0;
 	}
 
-
-	private static void rollMarbles(int[][] positions, int d) {
+	
+	// 빨간 구슬이 먼저 움직여야하는지 여부 파악
+	private static String decideMarbleToMoveFirst(int[] redMarblePosition, int[] blueMarblePosition, int direction) {
 		
+		if(direction==0 && redMarblePosition[0]>blueMarblePosition[0]) { // 위로 기울였고 파란 구슬이 더 위쪽에 있는 경우
+			return "blueFirst";
+		}else if(direction==1 && redMarblePosition[1]>blueMarblePosition[1]) { // 왼쪽으로 기울였고 파란 구슬이 더 왼쪽에 있는 경우
+			return "blueFirst";
+		}else if(direction==2 && redMarblePosition[0]<blueMarblePosition[0]) { // 아래쪽으로 기울였고 파란 구슬이 더 아래쪽에 있는 경우
+			return "blueFirst";
+		}else if(direction==3 && redMarblePosition[1]<blueMarblePosition[1]) { // 오른쪽으로 기울였고 파란 구슬이 더 오른쪽에 있는 경우
+			return "blueFirst";
+		}
 		
+		return "redFirst";
 		
 	}
 
+	private static Result rollMarble( int[] marblePosition, int[] marblePosition2, int d) {
+		
+		int originalRow = marblePosition[0];
+		int originalCol = marblePosition[1];
+		int newRow = marblePosition[0] + delta[0][d];
+		int newCol = marblePosition[1] + delta[1][d];
+		
+		while(board[newRow][newCol]=='.' && !(marblePosition2[0]==newRow && marblePosition2[1]==newCol)) {
+			newRow += delta[0][d];
+			newCol += delta[1][d];
+		}
+		
+		if(board[newRow][newCol]=='O') {
+			// 구멍을 만난경우 뒤에 움직이는 구슬의 움직임에 영향을 주지 않기 위해 위치를 -1,-1로 변경
+			marblePosition[0] = -1;
+			marblePosition[1] = -1;
+			return new Result(true, true); // 움직이지 않았고 구멍에 빠짐
+		}else {
+			int currentRow = newRow-delta[0][d];
+			int currentCol = newCol-delta[1][d];
+			
+			marblePosition[0] = currentRow;
+			marblePosition[1] = currentCol;
+			if(currentRow == originalRow && currentCol == originalCol) // 처음위치와 같으면
+				return new Result(false, false); // 움직이지 않았고 구멍에 빠지지 않음
+			return new Result(true, false); // 움직였고 구멍에 빠지지 않음
+		}
+		
+	}
 }
