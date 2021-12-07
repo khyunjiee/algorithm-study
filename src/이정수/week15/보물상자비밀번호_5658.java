@@ -37,6 +37,8 @@ public class 보물상자비밀번호_5658 {
 			int rotation = N/4; // 회전 횟수
 			int digits = rotation; // 숫자 하나의 자릿수
 			
+			numbers += numbers.substring(0,digits);
+			
 			
 			Set<String> numberSet = new HashSet<>(); // 중복 숫자 관리를 위한 set
 			
@@ -46,11 +48,7 @@ public class 보물상자비밀번호_5658 {
 					
 					int firstDigitIdx = startIdx + (digits * j); // 각 수의 시작 인덱스
 					
-					if(firstDigitIdx+digits>=numbers.length()) {
-						numberSet.add(numbers.substring(firstDigitIdx, numbers.length())+numbers.substring(0, ((firstDigitIdx+digits)%numbers.length())));
-					}else {
-						numberSet.add(numbers.substring(firstDigitIdx, (firstDigitIdx+digits)%numbers.length()));
-					}
+					numberSet.add(numbers.substring(firstDigitIdx, firstDigitIdx+digits)); // 새로운 숫자 생성
 					
 				}
 			}
