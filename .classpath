@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="src/공윤환/week2"/>
-	<classpathentry kind="src" path="src/김정연"/>
-	<classpathentry kind="src" path="src/이정수/week5"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
