@@ -1,4 +1,3 @@
-package com.ssafy.algo.study.week4;
 
 import java.io.BufferedReader;
 import java.io.IOException;
