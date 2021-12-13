@@ -1,4 +1,4 @@
-package com.ssafy.algo.study.week4;
+
 
 import java.util.Arrays;
 import java.util.Scanner;

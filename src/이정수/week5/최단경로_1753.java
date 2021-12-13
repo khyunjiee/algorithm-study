@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Main1753_이정수 {
+public class 최단경로_1753 {
 	/*
 	 * 접근:
 	 * V의 수가 2만으로 매우 크기 때문에 인접리스트로 그래프를 표현해야합니다.
