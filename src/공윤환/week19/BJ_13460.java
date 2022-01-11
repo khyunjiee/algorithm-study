@@ -10,7 +10,6 @@ import java.util.*;
 	 1. 최소거리 문제이기때문에 BFS로 접근했습니다.
 	 2. 맵 상태와 색별 좌표를 저장하는 클래스를 사용하고 조건대로 굴려봅니다..
 
-ㅋㅋ 메모리 80만에 2000ms 나왔네요...  방문체크 넣어서 리팩토링 해봐야겠습니다.
  */
 
 
@@ -19,6 +18,7 @@ public class BJ_13460 {
     static int n, m, hole[];
     static int[] dr = new int[]{-1, 1, 0, 0};
     static int[] dc = new int[]{0, 0, -1, 1};
+    static boolean visited[][][][];
 
     static class Board {
         char[][] map;
@@ -38,6 +38,7 @@ public class BJ_13460 {
         m = Integer.parseInt(st.nextToken());
         hole = new int[2];
         Board board = new Board(new char[n][m]);
+        visited = new boolean[n][m][n][m];
 
         for (int i = 0; i < n; i++) {
             char[] tmp = br.readLine().toCharArray();
@@ -74,13 +75,18 @@ public class BJ_13460 {
 
                 for (int d = 0; d < 4; d++) {
                     Board nextBoard = tilt(cur,d);
+                    int redR = nextBoard.red[0];
+                    int redC = nextBoard.red[1];
+                    int blueR = nextBoard.blue[0];
+                    int blueC = nextBoard.blue[1];
 
                     // 빨간색만 도착했으면 지금까지 거리 리턴
                     if(nextBoard==null)
                         return answer;
 
                     // 파란색이 도착하지 않았을때만 다음 Board 큐에 추가
-                    if (nextBoard.blue[0] != -1 && nextBoard.blue[1] != -1) {
+                    if (blueR != -1 && blueC != -1&&!visited[redR][redC][blueR][blueC]) {
+                        visited[redR][redC][blueR][blueC]=true;
                         q.offer(nextBoard);
                     }
                 }
