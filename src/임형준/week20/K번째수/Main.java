@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * memo : 못 풀어서, 풀이 참조했습니다. ( Sol.java ).
+ * memo : 못 풀어서, 풀이 참조했습니다. ( Sol.java )
  */
 
 public class Main {
