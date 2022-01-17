@@ -15,6 +15,8 @@ import java.util.Set;
  * 2. 만들어진 조합으로 set 을 만들어서 일치 여부 확인
  */
 
+/*test*/
+
 public class Main {
     static int N, K;
     static String[] arr ;
