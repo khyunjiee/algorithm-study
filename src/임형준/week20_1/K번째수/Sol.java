@@ -5,21 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * link : https://st-lab.tistory.com/281
- *
- * B[k] = x
- *
- * int mid = (start + end)/2
- *
- * mid 가 의미하는 것 = x를 찾는 변수
- *
- * mid 가 (start + end)/2 라고 가정
- * for i <- 1 to N
- *   count += Math.min( mid /i , N)
- *
- * count 가 K보다 작다면 mid 키워줘야 한다.
- *
- * 가장 처음에 등장하는 K값을 세는 것이기 때문에 lower bound 를 써준다.
+
  */
 
 public class Sol {

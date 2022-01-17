@@ -14,9 +14,6 @@ import java.util.Set;
  * 1. anta tica-> antic 5가지 알파벳을 제외한 21가지 알파벳으로 조합을 생성
  * 2. 만들어진 조합으로 set 을 만들어서 일치 여부 확인
  */
-
-/*test*/
-
 public class Main {
     static int N, K;
     static String[] arr ;
