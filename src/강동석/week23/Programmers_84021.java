@@ -7,7 +7,6 @@ import java.util.Queue;
 
 // 퍼즐 조각 채우기
 /*
- * 로직에 이상이 없어보였는데 오답이어서 틀린부분을 아직 발견하지 못했다.
  * game_board에서 빈칸 정보들을 list로 얻고, table에서 블럭 정보들을 list로 얻은 후 비교한다.
  * 비교할 때 회전했을 때 일치하는지 여부는 판단하지 않고 있는 그대로 비교한다. 그리고 일치하는 블럭들은 다 상쇄시킨 후
  * table을 90도 회전하여 다시 블럭 정보들을 list로 얻은 후 비교한다. 이런식으로 270도 까지 회전시켜 모두 비교한다.
@@ -15,7 +14,7 @@ import java.util.Queue;
 public class Programmers_84021 {
 
 	public static void main(String[] args) {
-		int[][] game_board = {{1,1,0,0,1,0},{0,0,1,0,1,0},{0,1,1,0,0,1},{1,1,0,1,1,1},{1,0,0,0,1,0},{0,1,1,1,0,0}};
+		int[][] game_board = {{0,0,1,0,0,1},{1,0,1,1,0,1},{1,0,0,1,0,0},{1,1,1,1,1,1},{1,1,1,1,1,1},{1,1,1,1,1,1}};
 		int[][] table = {{1,0,0,1,1,0},{1,0,1,0,1,0},{0,1,1,0,1,1},{0,0,1,0,0,0},{1,1,0,1,1,0},{0,1,0,0,0,0}};
 		System.out.println(solution(game_board, table));
 	}
@@ -37,7 +36,7 @@ public class Programmers_84021 {
 	static int[][] table_static;
 	static List<Block> gameBlockList; // game_board의 빈칸들의 정보
 	static List<Block> tableBlockList; // table의 블럭들의 정보
-	static int[][] dir = {{-1,0},{0,1},{1,0},{0,-1}};
+	static int[][] dir = {{-1,0},{0,1},{1,0},{0,-1}}; // 상,우,하,좌
 	
 	public static int solution(int[][] game_board, int[][] table) {
 		table_static = table;
@@ -58,43 +57,17 @@ public class Programmers_84021 {
         matchBlock();
 
         rotateTable90(); // table을 90도 시계방향 회전
-        for(int[] ar : table_static) {
-        	for(int a : ar) {
-        		System.out.print(a+" ");
-        	}
-        	System.out.println();
-        }
-        System.out.println();
         settingTableInfo();
         matchBlock();
         
         rotateTable90(); // table을 90도 시계방향 회전
-        for(int[] ar : table_static) {
-        	for(int a : ar) {
-        		System.out.print(a+" ");
-        	}
-        	System.out.println();
-        }
-        System.out.println();
         settingTableInfo();
         matchBlock();
         
         rotateTable90(); // table을 90도 시계방향 회전
-        for(int[] ar : table_static) {
-        	for(int a : ar) {
-        		System.out.print(a+" ");
-        	}
-        	System.out.println();
-        }
-        System.out.println();
         settingTableInfo();
         matchBlock();
-//        for(Block block : gameBlockList) {
-//        	for(int[] ar : block.posList) {
-//        		System.out.println(ar[0]+","+ar[1]);
-//        	}
-//        	System.out.println();
-//        }
+        
         return answer;
     }
 	
@@ -124,7 +97,8 @@ public class Programmers_84021 {
 	public static void matchBlock() {
 		for(int idx=0; idx<gameBlockList.size(); ++idx) {
         	Block gameBlock = gameBlockList.get(idx);
-        	for(Block tableBlock : tableBlockList) {
+        	for(int idx2=0; idx2<tableBlockList.size(); ++idx2) {
+        		Block tableBlock = tableBlockList.get(idx2);
         		if(gameBlock.num==tableBlock.num) { // 두 블럭의 칸의 갯수가 같으면
         			if(checkSameBlock(gameBlock.posList,tableBlock.posList)) { // 두 조각이 일치하면
         				answer += gameBlock.num; // 정답 칸의 갯수 증가
@@ -133,6 +107,7 @@ public class Programmers_84021 {
         				for(int[] pos : tableBlock.posList) {
         					table_static[startR+pos[0]][startC+pos[1]]=0; // 일치하는 조각은 table에서 0으로 표시하여 없애기
         				}
+        				tableBlockList.remove(idx2);
         				gameBlockList.remove(idx--); // 리스트에서 제거
         				break;
         			}
@@ -152,7 +127,7 @@ public class Programmers_84021 {
 			
 			if(board[r][c]==1) continue; // 이미 채워져 있으면 무시
 			board[r][c]=1; // 채우기
-			posList.add(new int[] {r-i,c-j}); // 첫 번쨰 칸을 {0,0} 기준으로 변환하여 좌표 저장
+			posList.add(new int[] {r-i,c-j}); // 첫 번째 칸을 {0,0} 기준으로 변환하여 좌표 저장
 			
 			for(int d=0; d<4; ++d) {
 				int nr = r+dir[d][0];
@@ -179,7 +154,7 @@ public class Programmers_84021 {
 			
 			if(visited[r][c]) continue; // 방문체크
 			visited[r][c] = true; // 방문표시
-			posList.add(new int[] {r-i,c-j}); // 첫 번쨰 칸을 {0,0} 기준으로 변환하여 좌표 저장
+			posList.add(new int[] {r-i,c-j}); // 첫 번째 칸을 {0,0} 기준으로 변환하여 좌표 저장
 			
 			for(int d=0; d<4; ++d) {
 				int nr = r+dir[d][0];
