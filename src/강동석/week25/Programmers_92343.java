@@ -1,13 +1,12 @@
 package programmers;
 
+import java.util.ArrayList;
+
 // 양과 늑대
 /*
- * greedy하게 접근
- * 1. 안 잡은 양 중에서 가장 가까운 양을 찾음.
- * 2. 그 양을 잡을 수 있는지 판단 후 잡을 수 있으면 중간 과정에서 늑대와 그 양을 모두 잡음.
- * 3. 잡은 양 카운트하고, 남은 목숨 계산함.
- * 4. 1~3 계속 반복하며 양을 다 잡거나 가장 가까운 양을 잡을 수 없는 상태이면 종료 
- * 위와 같은 로직으로 해결하려 하였으나, 로직이 잘못된건지 풀지 못했다ㅠㅠ
+ * info의 길이가 2~17로 이진트리 노드의 갯수가 최대 17개이므로 거의 완전탐색을 하여도 시간걱정을 할 필요가 없는 문제이다.
+ * dfs를 이용하여 완탐을 하면서, 기존에 갈 수 있는 자식 노드들의 정보를 다음 dfs탐색이 같이 넘겨주면,
+ * 매 dfs마다 갈 수 있는 자식 노드들의 정보를 가지고 있으면서 완탐을 하게 된다.
  */
 public class Programmers_92343 {
 
@@ -17,61 +16,46 @@ public class Programmers_92343 {
 		System.out.println(solution(info, edges));
 	}
 	
-	static int[] parents; 
-	static boolean[] catched;
+	static int max;
+	static int[] infos;
+	static ArrayList<Integer>[] adjList;
 	
 	public static int solution(int[] info, int[][] edges) {
+		infos = info;
 		int length = info.length;
-		catched = new boolean[length]; // 현재까지 모은 동물들을 체크
-		catched[0] = true; // 0번 노드는 항상 true
-		parents = new int[length]; // 각 노드의 부모 노드 인덱스를 저장
-		for(int i=0,len=length-1; i<len; ++i) {
-			parents[edges[i][1]] = edges[i][0]; // 부모 노드의 인덱스를 저장
+		adjList = new ArrayList[length];
+		for(int i=0; i<length; ++i) {
+			adjList[i] = new ArrayList<Integer>();
 		}
-		catchNode(3);
-		System.out.println(countToNode(5));
-		int life = 1; // 목숨 = 모은 양의 수 - 모은 늑대 수
-		int answer = 1; // 모은 양의 수
-		while(true) {
-			int minDist = 99; // 최소거리
-			int idx = 0; // 해당 양의 인덱스
-			for(int i=1; i<length; ++i) { // 모든 노드를 체크하면서(루트노드 제외)
-				if(info[i]==0 && !catched[i]) { // 아직 잡히지 않은 양이면
-					int count = countToNode(i);
-					if(minDist > count) {
-						minDist = count; // 최솟값 갱신
-						idx = i; // 해당 노드의 인덱스 저장
-					}
-				}
-			}
-			if(life>minDist-1) { // min-1만큼의 늑대를 모아도 목숨이 살아있으면
-				life -= minDist-2; // min-1만큼의 목숨을 빼고, 양을 1마리 얻으면 1증가 이므로
-				catchNode(idx); // idx번째 노드까지 내려가면서 모두 catched에 체크하기
-				answer++; // 모은 양의 수 1증가
-			}else { // min만큼의 늑대를 모으면 목숨이 없으면
-				break; // 종료
-			}
+		for(int[] edge : edges) {
+			adjList[edge[0]].add(edge[1]);
 		}
-        return answer;
+		ArrayList<Integer> start = new ArrayList<Integer>();
+		start.add(0); // 0번 노드만 포함하여 시작
+		max=0;
+		dfs(0,0,0,start);
+        return max;
     }
 	
-	public static int countToNode(int nodeNum) { // nodeNum번 노드에서 catched한 노드까지의 거리를 반환
-		int cnt = 1; // 도달하는 횟수
-		while(true) {
-			if(!catched[parents[nodeNum]]) { // 부모가 아직 안잡혔으면
-				nodeNum = parents[nodeNum]; // 부모 노드로 거슬러 올라가기
-				cnt++; // 횟수 1 증가
-			}else {
-				break;
-			}
+	public static void dfs(int curNode, int sheep, int wolves, ArrayList<Integer> childList) {
+		if(infos[curNode]==0) sheep++; // 해당 노드가 양이면 1마리 증가
+		else wolves++; // 아니면 늑대 1마리 증가
+		
+		if(wolves>=sheep) { // 늑대가 양보다 같거나 많으면 종료
+			return;
 		}
-		return cnt;
-	}
-	
-	public static void catchNode(int nodeNum) {
-		while(!catched[nodeNum]) { // catched되어있지 않으면
-			catched[nodeNum]=true; // 모으기
-			nodeNum = parents[nodeNum]; // 부모로 거슬러 올라가기
+		if(max<sheep) { // 최댓값 갱신
+			max = sheep;
+		}
+		ArrayList<Integer> nextList = new ArrayList<Integer>();
+		for(int nextNode : adjList[curNode]) {
+			nextList.add(nextNode); // 현재 노드의 새로운 자식노드들을 추가
+		}
+		for(int nextNode : childList) { // 이전의 갈 수 있는 자식노드들에 대하여
+			if(nextNode!=curNode) nextList.add(nextNode); // 현재 노드가 아니면 자식 노드를 전부 합치기 
+		}
+		for(int nextNode : nextList) {
+			dfs(nextNode, sheep, wolves, nextList); // 자식 노드들을 전부 방문
 		}
 	}
 }
